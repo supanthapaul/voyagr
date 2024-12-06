@@ -12,7 +12,9 @@ export default function Index() {
         alignItems: "center",
       }}
     >
-			<Link replace href="/hello">Go to test</Link>
+			<Link replace href="/hello">
+				<ThemedText type='link'>Go to test</ThemedText>
+			</Link>
       <ThemedText>Edit app/index.tsx to edit this screen!!</ThemedText>
     </ThemedView>
   );

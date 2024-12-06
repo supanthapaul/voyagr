@@ -1,22 +1,20 @@
 import { useColorScheme } from "@/hooks/useColorScheme";
 import { StatusBar } from 'expo-status-bar';
 import { Stack } from "expo-router";
-import { ThemedView } from "@/components/ThemedView";
-import { ThemedText } from "@/components/ThemedText";
 import {Link} from 'expo-router';
+import { SafeAreaView } from "react-native";
+import { Layout,Text } from "@ui-kitten/components";
 
 export default function Hello() {
 	const colorScheme = useColorScheme();
   return (
-    <ThemedView
-      style={{
-        flex: 1,
-        justifyContent: "center",
-        alignItems: "center",
-      }}
-    >
-			<Link replace href="/">Go to test</Link>
-      <ThemedText>HELLO COMPONENT!</ThemedText>
-    </ThemedView>
+    <SafeAreaView style={{ flex: 1 }}>
+			<Layout style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+				<Text category='h1'>Hello</Text>
+				<Link href={"/"}>
+					<Text>Go to Home</Text>
+				</Link>
+			</Layout>
+		</SafeAreaView>
   );
 }

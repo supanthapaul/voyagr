@@ -1,5 +1,4 @@
-import { ThemedText } from '@/components/ThemedText';
-import { ThemedView } from '@/components/ThemedView';
+import { Layout, Text } from '@ui-kitten/components';
 import { Stack } from 'expo-router';
 import {Link} from 'expo-router';
 import React from 'react';
@@ -9,13 +8,13 @@ import { StyleSheet } from 'react-native';
 export default function NotFoundScreen() {
   return (
     <>
-      <Stack.Screen options={{ title: 'Oops!' }} />
-      <ThemedView style={styles.container}>
-        <ThemedText type="title">This screen doesn't exist.</ThemedText>
+      <Stack.Screen options={{ title: 'Oopsy Daisy!' }} />
+      <Layout style={styles.container}>
+        <Text category='h1'>This screen doesn't exist.</Text>
         <Link replace href="/" style={styles.link}>
-          <ThemedText type="link">Go to home sdsdsd!</ThemedText>
+          <Text >Go to home sdsdsd!</Text>
         </Link>
-      </ThemedView>
+      </Layout>
     </>
   );
 }

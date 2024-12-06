@@ -2,16 +2,27 @@ import { useColorScheme } from "@/hooks/useColorScheme";
 import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
 import { StatusBar } from 'expo-status-bar';
 import { Stack } from "expo-router";
+import * as eva from '@eva-design/eva';
+import { ApplicationProvider, Layout, Text, TopNavigation } from '@ui-kitten/components';
+import { useState } from "react";
 
 export default function RootLayout() {
 	const colorScheme = useColorScheme();
+	const [theme, setTheme] = useState(eva.dark);
   return (
-    <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
+    <ApplicationProvider {...eva} theme={theme}>
       <Stack>
-        <Stack.Screen name="index" />
+        <Stack.Screen name="index" options={
+					{ title: 'Welcome', 
+						headerTintColor: theme === eva.dark ? '#eee' : '#282828',
+						headerStyle: {
+              backgroundColor: theme === eva.dark ? '#060028' : '#e0e0e0',
+							
+           } }}/>
+        <Stack.Screen name="hello" />
         <Stack.Screen name="+not-found" />
       </Stack>
-      <StatusBar style="auto" />
-    </ThemeProvider>
+      <StatusBar style={theme === eva.dark ? "light" : "dark"}/>
+    </ApplicationProvider>
   );
 }

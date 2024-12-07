@@ -1,10 +1,12 @@
 import React, { useEffect } from 'react';
 import { StyleSheet, View } from 'react-native';
-import { Input, RangeCalendar, Button, Layout, Text, Icon, Spinner } from '@ui-kitten/components';
+import { Input, RangeDatepicker, Button, Layout, Text, Icon, Spinner } from '@ui-kitten/components';
+import { MomentDateService } from '@ui-kitten/moment';
 import moment from 'moment';
 import axios from 'axios';
 import { getAuth } from "firebase/auth";
 
+const dateService = new MomentDateService();
 
 const styles = StyleSheet.create({
 	formContainer: {
@@ -13,13 +15,14 @@ const styles = StyleSheet.create({
 	},
 	formElement: {
 		marginBottom: 8,
-		flexDirection: 'row',
-		justifyContent:'center'
 	},
 	indicator: {
 		justifyContent: 'center',
 		alignItems: 'center',
 	},
+	dateContainer: {
+		minHeight: 50,
+	}
 });
 
 
@@ -28,7 +31,6 @@ const CreateForm = () => {
 
   const [value, setValue] = React.useState('');
   const [range, setRange] = React.useState({});
-  const [calenderOpen, setCalenderOpen] = React.useState(false); 
   const [loading, setLoading] = React.useState(false); 
   
 	const LoadingIndicator = (props) => (
@@ -46,7 +48,7 @@ const CreateForm = () => {
 			const token = await getAuth().currentUser.getIdToken(/* forceRefresh */ true)
 			const body = {
 				destination: value,
-				days: moment(range.endDate).diff(moment(range.startDate), 'days') + 1
+				days: range.endDate.diff(range.startDate, 'days') + 1
 			}
 			console.log(body)
 			const headers = {
@@ -79,19 +81,20 @@ const CreateForm = () => {
 			/>
 
 			{/* Calender element */}
-			<Input 
-					onFocus={e => setCalenderOpen(true)} 
-					onBlur={e => setCalenderOpen(false)}
-					placeholder='Travel Dates 📅'
-					value = {moment(range.startDate).format("MMMM Do YYYY") +" -> " + moment(range.endDate).format("MMMM Do YYYY")}
-					style={styles.formElement}
-
-			/>    
-			{calenderOpen &&
-			(<RangeCalendar
-					range={range}
-					onSelect={nextRange => setRange(nextRange)}
-				/>)}
+			<Layout
+      style={styles.dateContainer}
+      level='1'
+    >
+			<RangeDatepicker
+        range={range}
+				placeholder='Travel Dates 📅'
+        onSelect={nextRange => setRange(nextRange)}
+				dateService={dateService}
+				min={moment()}
+				style={styles.formElement}
+      />
+		</Layout>
+			
 			<Button 
 				style={styles.formElement} 
 				onPress={onGenerateWithAi} 

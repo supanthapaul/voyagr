@@ -12,6 +12,7 @@ app.get('/itinerary', async (req, res) => {
 	const model = new ItineraryModel(process.env.GEMINI_API_KEY, "gemini-1.5-flash");
 	const result = await model.getItinerary("Thailand", 3)
 	console.log(result);
+	res.send(result)
 })
 
 app.listen(port, () => {

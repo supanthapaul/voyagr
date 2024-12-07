@@ -3,6 +3,8 @@ import { StyleSheet, View } from 'react-native';
 import { Input, RangeCalendar, Button, Layout, Text, Icon, Spinner } from '@ui-kitten/components';
 import moment from 'moment';
 import axios from 'axios';
+import { getAuth } from "firebase/auth";
+
 
 const styles = StyleSheet.create({
 	formContainer: {
@@ -37,9 +39,23 @@ const CreateForm = () => {
 	
 
 	const onGenerateWithAi = async () => {
+		if(range.startDate == null || range.endDate == null || value.trim() == '')
+			return;
 		setLoading(true);
 		try {
-			const res = await axios.get(process.env.EXPO_PUBLIC_ITINERARY_API)
+			const token = await getAuth().currentUser.getIdToken(/* forceRefresh */ true)
+			const body = {
+				destination: value,
+				days: moment(range.endDate).diff(moment(range.startDate), 'days') + 1
+			}
+			console.log(body)
+			const headers = {
+				'Content-Type': 'application/json',
+				'Authorization': token
+			};
+			const res = await axios.post(process.env.EXPO_PUBLIC_ITINERARY_API, body, {
+				headers: headers
+			})
 			console.log(res.data);
 		}
 		catch(err) {

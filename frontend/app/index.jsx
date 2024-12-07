@@ -38,7 +38,7 @@ export default function Index() {
   return (
 		<SafeAreaView style={{ flex: 1 }}>
 			<Layout style={styles.container}>
-				{user != null ? (<CreateForm />) : (<CreateForm />)}
+				{user != null ? (<CreateForm />) : (<LoginPage />)}
 				
 			</Layout>
 		</SafeAreaView>

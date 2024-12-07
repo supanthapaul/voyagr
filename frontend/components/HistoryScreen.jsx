@@ -3,6 +3,7 @@ import { StyleSheet, View } from 'react-native';
 import { Input, RangeDatepicker, Button, Layout, Text, Icon, List, ListItem } from '@ui-kitten/components';
 import { MomentDateService } from '@ui-kitten/moment';
 import moment from 'moment';
+import { Link, router  } from 'expo-router';
 import {useTripsContext} from '@/state/ItineraryContext';
 
 const dateService = new MomentDateService();
@@ -41,12 +42,14 @@ const HistoryScreen = () => {
   );
 
   const renderItem = ({ item, index }) => (
-    <ListItem
-      title={`${item.name}`}
+		<ListItem
+			title={`${item.name}`}
 			key={item.id}
-      description={`${moment(item.startDate).format("MMM Do, YYYY")} To ${moment(item.endDate).format("MMM Do, YYYY")}`}
-      accessoryRight={() => renderItemAccessory(item.id)}
-    />
+			onPress={e => router.navigate({pathname: '/[id]', params: {id: item.id}})}
+			description={`${moment(item.startDate).format("MMM Do, YYYY")} To ${moment(item.endDate).format("MMM Do, YYYY")}`}
+			accessoryRight={() => renderItemAccessory(item.id)}
+			/>
+    
   );
 
   return (

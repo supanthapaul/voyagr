@@ -27,7 +27,10 @@ export default function RootLayout() {
 						{ title: 'Voyagr', 
 							...headerOptions
 							}}/>
-					<Stack.Screen name="hello" />
+					<Stack.Screen name="[id]" options={
+						{ title: 'Trip Details', 
+							...headerOptions
+							}}/>
 					<Stack.Screen name="+not-found" />
 				</Stack>
 				<StatusBar style={theme === eva.dark ? "light" : "dark"}/>

@@ -1,51 +1,53 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Card, List, Text, ListItem } from '@ui-kitten/components';
+import {useTripsContext} from '@/state/ItineraryContext';
+import moment from 'moment';
 
-const data = new Array(8).fill({
-  title: 'Item',
-});
 
-const itineraryList = () => {
-
+const itineraryList = ({trip}) => {
+    useEffect(() => {
+        console.log(trip)
+    }, [trip])
+    
     const tripLists = ({ item, index }) => (
-        <ListItem title={`${item.title} ${index + 1}`} />
+        <ListItem title={`${item}`} />
       );
 
-      const rendertripLists = () => (
+      const rendertripLists = (activities) => (
         <List
           style={styles.listContainer}
-          data={data}
+          data={activities}
           renderItem={tripLists}
         />
       );
        
-  const headerHighlight = (headerProps, info) => (
+  const headerHighlight = (headerProps, info, index) => (
     <View {...headerProps}>
       <Text category='h6'>
-        {`${info.item.title} ${info.index + 1}`}
+        {`${info.highlight}`}
       </Text>
-      <Text>Date:20/12/20</Text>
+      <Text>{moment(trip.startDate).add(index, 'days').format("MMM Do, YYYY")}</Text>
     </View>
   );
 
-  const renderItem = (info) => (
+  const renderItem = ({item, index}) => (
     <Card
       style={styles.item}
       status='basic'
-      header={(headerProps) => headerHighlight(headerProps, info)}
+      header={(headerProps) => headerHighlight(headerProps, item, index)}
     >
-        {rendertripLists()}
+        {rendertripLists(item.activities)}
     </Card>
   );
 
   return (
     <> 
-    <Text category='h5'> Thailand Trip Itinerary!</Text>
+    <Text category='h5'> {trip.name}</Text>
     <List
       style={styles.container}
       contentContainerStyle={styles.contentContainer}
-      data={data}
+      data={trip.itinerary}
       renderItem={renderItem}
     />
     </>
@@ -55,7 +57,7 @@ const itineraryList = () => {
 
 const styles = StyleSheet.create({
   container: {
-    maxHeight: 320,
+    maxHeight: "100%",
   },
   contentContainer: {
     paddingHorizontal: 8,

@@ -7,6 +7,8 @@ import axios from 'axios';
 import { getAuth } from "firebase/auth";
 import ItineraryList from "./itineraryList";
 import {useTripsContext} from '@/state/ItineraryContext';
+import "react-native-get-random-values";
+import { v4 as uuidv4 } from 'uuid';
 
 
 const dateService = new MomentDateService();
@@ -35,6 +37,7 @@ const CreateForm = () => {
   const [value, setValue] = React.useState('');
   const [range, setRange] = React.useState({});
   const [loading, setLoading] = React.useState(false); 
+  const [currentTrip, setCurrentTrip] = React.useState(null); 
   
 	const LoadingIndicator = (props) => (
 		<View style={[props.style, styles.indicator]}>
@@ -64,13 +67,14 @@ const CreateForm = () => {
 			})
 			console.log(res.data);
 			const tripObject = {
-				id: '2323',
+				id: uuidv4(),
 				name: body.destination + " Trip",
 				startDate: range.startDate.toISOString(),
 				endDate: range.endDate.toISOString(),
 				itinerary: res.data
 			}
 			dispatch({ type: 'ADD_TRIP', payload: tripObject })
+			setCurrentTrip(tripObject);
 		}
 		catch(err) {
 			console.log(err.message)
@@ -114,14 +118,17 @@ const CreateForm = () => {
 				disabled={loading}>
 			{loading ? "Planning your trip..." : "🪄 Generate with AI"}
 			</Button>
-			<Button
+			{/* <Button
 				style={styles.formElement}
 				appearance='outline'
 			>
 				Make Yourself
-			</Button>
+			</Button> */}
 		{/* Itinerary element */}
-			<ItineraryList />
+		{
+			currentTrip && (<ItineraryList trip={currentTrip} />)
+		}
+			
   </Layout>
   	
   );

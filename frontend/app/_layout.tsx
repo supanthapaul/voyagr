@@ -6,6 +6,7 @@ import * as eva from '@eva-design/eva';
 import { ApplicationProvider, Layout, Text, TopNavigation, IconRegistry } from '@ui-kitten/components';
 import { useState } from "react";
 import { EvaIconsPack } from '@ui-kitten/eva-icons';
+import {TripsProvider} from '@/state/ItineraryContext';
 
 export default function RootLayout() {
 	const colorScheme = useColorScheme();
@@ -18,7 +19,7 @@ export default function RootLayout() {
     }
   };
   return (
-		<>
+		<TripsProvider>
 			<IconRegistry icons={EvaIconsPack} />
 			<ApplicationProvider {...eva} theme={theme}>
 				<Stack>
@@ -31,7 +32,7 @@ export default function RootLayout() {
 				</Stack>
 				<StatusBar style={theme === eva.dark ? "light" : "dark"}/>
 			</ApplicationProvider>
-		</>
+		</TripsProvider>
     
   );
 }

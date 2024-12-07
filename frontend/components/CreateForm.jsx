@@ -6,6 +6,8 @@ import moment from 'moment';
 import axios from 'axios';
 import { getAuth } from "firebase/auth";
 import ItineraryList from "./itineraryList";
+import {useTripsContext} from '@/state/ItineraryContext';
+
 
 const dateService = new MomentDateService();
 
@@ -29,7 +31,7 @@ const styles = StyleSheet.create({
 
 
 const CreateForm = () => {
-
+	const { state, dispatch } = useTripsContext();
   const [value, setValue] = React.useState('');
   const [range, setRange] = React.useState({});
   const [loading, setLoading] = React.useState(false); 
@@ -47,9 +49,10 @@ const CreateForm = () => {
 		setLoading(true);
 		try {
 			const token = await getAuth().currentUser.getIdToken(/* forceRefresh */ true)
+			const numberOfDays = range.endDate.diff(range.startDate, 'days') + 1;
 			const body = {
 				destination: value,
-				days: range.endDate.diff(range.startDate, 'days') + 1
+				days: numberOfDays
 			}
 			console.log(body)
 			const headers = {
@@ -60,6 +63,14 @@ const CreateForm = () => {
 				headers: headers
 			})
 			console.log(res.data);
+			const tripObject = {
+				id: '2323',
+				name: body.destination + " Trip",
+				startDate: range.startDate.toISOString(),
+				endDate: range.endDate.toISOString(),
+				itinerary: res.data
+			}
+			dispatch({ type: 'ADD_TRIP', payload: tripObject })
 		}
 		catch(err) {
 			console.log(err.message)

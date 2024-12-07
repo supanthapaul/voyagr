@@ -1,11 +1,13 @@
-import React, { createContext, useContext, useReducer } from 'react';
+import React, { createContext, useContext, useReducer, useEffect } from 'react';
 import moment from 'moment'
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const TripsContext = createContext();
 
 const sampleTrip = {
 	id: 'sdsdsd',
 	name: 'Thailand Trip',
+	destination: 'Kolkata',
 	startDate: moment().toISOString(),
 	endDate: moment().add(3, 'days').toISOString(),
 	itinerary: [
@@ -25,24 +27,19 @@ const initialState = {
 
 const tripsReducer = (state, action) => {
   switch (action.type) {
-    case 'ADD_TASK':
+    case 'ADD_TRIP':
       return {
-        ...state,
-        tasks: [...state.tasks, action.payload],
+				...state,
+        trips: [...state.trips, action.payload]
       };
-    case 'TOGGLE_TASK':
+    case 'SET_TRIPS':
       return {
-        ...state,
-        tasks: state.tasks.map(task =>
-          task.id === action.payload
-            ? { ...task, completed: !task.completed }
-            : task
-        ),
+        ...action.payload,
       };
-    case 'REMOVE_TASK':
+    case 'REMOVE_TRIP':
       return {
         ...state,
-        tasks: state.tasks.filter(task => task.id !== action.payload),
+        trips: state.trips.filter(trip => trip.id !== action.payload),
       };
     default:
       return state;
@@ -51,6 +48,19 @@ const tripsReducer = (state, action) => {
 
 export const TripsProvider = ({ children }) => {
   const [state, dispatch] = useReducer(tripsReducer, initialState);
+
+	useEffect(() => {
+    AsyncStorage.setItem('VOYAGR::TRIPS_STATE', JSON.stringify(state));
+  }, [state]);
+
+	useEffect(() => {
+    AsyncStorage.getItem('VOYAGR::TRIPS_STATE').then((value) => {
+			console.log(JSON.parse(value))
+      if (value) {
+        dispatch({ type: 'SET_TRIPS', payload: JSON.parse(value) })
+      }
+    });
+  }, []);
 
   return (
     <TripsContext.Provider value={{ state, dispatch }}>

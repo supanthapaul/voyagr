@@ -6,6 +6,8 @@ import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { useEffect, useState } from "react";
 import LoginPage from "../components/loginPage";
 import app, {auth} from '@/firebaseConfig';
+import {AppNavigator} from '@/components/AppTabNavigator';
+import { NavigationIndependentTree } from "@react-navigation/native";
 
 
 export default function Index() {
@@ -37,10 +39,13 @@ export default function Index() {
 
   return (
 		<SafeAreaView style={{ flex: 1 }}>
+			<NavigationIndependentTree>
 			<Layout style={styles.container}>
-				{user != null ? (<CreateForm />) : (<LoginPage />)}
+				{user != null ? (<AppNavigator />) : (<LoginPage />)}
 				
 			</Layout>
+			</NavigationIndependentTree>
+			
 		</SafeAreaView>
   );
 }

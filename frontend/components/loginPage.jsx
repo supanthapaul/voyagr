@@ -10,14 +10,12 @@ const LoginPage = () => {
   const auth = getAuth();
   signInAnonymously(auth)
     .then(() => {
-      // Signed in..
       console.log("Signed in successfully");
     })
     .catch((error) => {
       const errorCode = error.code;
       const errorMessage = error.message;
       console.log(error.message);
-      // ...
     });
   }
 
@@ -27,7 +25,9 @@ const LoginPage = () => {
   const styles = StyleSheet.create({
 		formContainer: {
 			flexDirection: 'row',
-			flex: 1
+			flex: 1,
+      justifyContent:'center',
+      alignItems: 'center',
 		},
     formElement: {
       marginBottom: 8,
@@ -38,8 +38,8 @@ const LoginPage = () => {
 
   return (
     <Layout style={styles.formContainer}>
-      <Spinner />
-    <Text category='h3'> Initializing Login </Text>
+      <Spinner size='medium'/>
+    <Text category='p1'> Setting Up... </Text>
   </Layout>
 );
 };

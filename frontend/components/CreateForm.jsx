@@ -5,6 +5,7 @@ import { MomentDateService } from '@ui-kitten/moment';
 import moment from 'moment';
 import axios from 'axios';
 import { getAuth } from "firebase/auth";
+import ItineraryList from "./itineraryList";
 
 const dateService = new MomentDateService();
 
@@ -108,7 +109,10 @@ const CreateForm = () => {
 			>
 				Make Yourself
 			</Button>
+		{/* Itinerary element */}
+			<ItineraryList />
   </Layout>
+  	
   );
 
 };

@@ -1,12 +1,32 @@
 import React, { useEffect } from 'react';
 import { StyleSheet } from 'react-native';
-import { Input, RangeCalendar, Button, Layout, Text, Icon } from '@ui-kitten/components';
-import moment from 'moment';
+import { Button, Layout, Text, Spinner } from '@ui-kitten/components';
+import { getAuth, signInAnonymously } from "firebase/auth";
+
 
 const LoginPage = () => {
+
+  const loginAnonymously = () => {
+  const auth = getAuth();
+  signInAnonymously(auth)
+    .then(() => {
+      // Signed in..
+      console.log("Signed in successfully");
+    })
+    .catch((error) => {
+      const errorCode = error.code;
+      const errorMessage = error.message;
+      console.log(error.message);
+      // ...
+    });
+  }
+
+  useEffect(() => {
+    loginAnonymously();
+  }, []);
   const styles = StyleSheet.create({
 		formContainer: {
-			flexDirection: 'column',
+			flexDirection: 'row',
 			flex: 1
 		},
     formElement: {
@@ -18,14 +38,10 @@ const LoginPage = () => {
 
   return (
     <Layout style={styles.formContainer}>
-			<Text category='h3'>Login</Text>
-
-			<Button style={styles.formElement}>
-			Login With Google
-			</Button>
+      <Spinner />
+    <Text category='h3'> Initializing Login </Text>
   </Layout>
-  );
-
+);
 };
 
 export default LoginPage;

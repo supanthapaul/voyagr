@@ -3,8 +3,9 @@ import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native
 import { StatusBar } from 'expo-status-bar';
 import { Stack } from "expo-router";
 import * as eva from '@eva-design/eva';
-import { ApplicationProvider, Layout, Text, TopNavigation } from '@ui-kitten/components';
+import { ApplicationProvider, Layout, Text, TopNavigation, IconRegistry } from '@ui-kitten/components';
 import { useState } from "react";
+import { EvaIconsPack } from '@ui-kitten/eva-icons';
 
 export default function RootLayout() {
 	const colorScheme = useColorScheme();
@@ -17,16 +18,20 @@ export default function RootLayout() {
     }
   };
   return (
-    <ApplicationProvider {...eva} theme={theme}>
-      <Stack>
-        <Stack.Screen name="index" options={
-					{ title: 'Welcome', 
-            ...headerOptions
-						 }}/>
-        <Stack.Screen name="hello" />
-        <Stack.Screen name="+not-found" />
-      </Stack>
-      <StatusBar style={theme === eva.dark ? "light" : "dark"}/>
-    </ApplicationProvider>
+		<>
+			<IconRegistry icons={EvaIconsPack} />
+			<ApplicationProvider {...eva} theme={theme}>
+				<Stack>
+					<Stack.Screen name="index" options={
+						{ title: 'Voyagr', 
+							...headerOptions
+							}}/>
+					<Stack.Screen name="hello" />
+					<Stack.Screen name="+not-found" />
+				</Stack>
+				<StatusBar style={theme === eva.dark ? "light" : "dark"}/>
+			</ApplicationProvider>
+		</>
+    
   );
 }

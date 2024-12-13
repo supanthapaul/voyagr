@@ -27,6 +27,9 @@ module.exports = async function getAutocompleteService(searchQuery) {
 	}
 
 	catch (err) {
-		console.log(err);
+		throw {
+			error: "Failed to generate autocomplete response",
+			message: err.message
+		}
 	}
 }

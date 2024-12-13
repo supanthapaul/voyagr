@@ -1,21 +1,22 @@
 const { GoogleGenerativeAI } = require("@google/generative-ai");
-const {itineraryModelSchema} = require('./itineraryModelSchema');
+const { itineraryModelSchema } = require('./itineraryModelSchema');
 
 module.exports = class ItineraryModel {
 	constructor(apiKey, geminiModelName) {
 		this.modelName = geminiModelName;
 		this.genAI = new GoogleGenerativeAI(apiKey);
-		
-		this.model = this.genAI.getGenerativeModel({ 
+
+		this.model = this.genAI.getGenerativeModel({
 			model: this.modelName,
 			generationConfig: {
 				responseMimeType: "application/json",
 				responseSchema: itineraryModelSchema,
-			}, });
+			},
+		});
 	}
 
 	changeModel(geminiModelName) {
-		this.model = this.genAI.getGenerativeModel({geminiModelName})
+		this.model = this.genAI.getGenerativeModel({ geminiModelName })
 	}
 
 	async getItinerary(destination, days) {
@@ -25,7 +26,7 @@ module.exports = class ItineraryModel {
 			return result.response.text();
 		}
 		catch (err) {
-			return {
+			throw {
 				error: "Failed to generate response",
 				message: err.message
 			}

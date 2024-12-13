@@ -14,7 +14,9 @@ module.exports = async function getImageService(searchQuery, pageQuery) {
     return data;
   }
   catch (err) {
-    console.log(err);
-
+    throw {
+      error: "Failed to generate image response",
+      message: err.message
+    }
   }
 }

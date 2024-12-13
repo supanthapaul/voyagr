@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { StyleSheet, View } from 'react-native';
-import { Input, RangeDatepicker, Button, Layout, Text, Icon, Spinner, TopNavigation, Divider } from '@ui-kitten/components';
+import { Input, RangeDatepicker, Button, Layout, Text, Icon, Spinner, TopNavigation, Divider, Autocomplete, AutocompleteItem } from '@ui-kitten/components';
 import { MomentDateService } from '@ui-kitten/moment';
 import moment from 'moment';
 import axios from 'axios';
@@ -9,6 +9,7 @@ import ItineraryList from "./itineraryList";
 import {useTripsContext} from '@/state/ItineraryContext';
 import "react-native-get-random-values";
 import { v4 as uuidv4 } from 'uuid';
+import AutocompleteList from './AutocompleteList';
 
 
 const dateService = new MomentDateService();
@@ -34,7 +35,8 @@ const styles = StyleSheet.create({
 
 const CreateForm = () => {
 	const { state, dispatch } = useTripsContext();
-  const [value, setValue] = React.useState('');
+  const [destinationInput, setDestinationInput] = React.useState('');
+  const [destination, setDestination] = React.useState('');
   const [range, setRange] = React.useState({});
   const [loading, setLoading] = React.useState(false); 
   const [currentTrip, setCurrentTrip] = React.useState(null); 
@@ -47,14 +49,14 @@ const CreateForm = () => {
 	
 
 	const onGenerateWithAi = async () => {
-		if(range.startDate == null || range.endDate == null || value.trim() == '')
+		if(range.startDate == null || range.endDate == null || destinationInput.trim() == '')
 			return;
 		setLoading(true);
 		try {
 			const token = await getAuth().currentUser.getIdToken(/* forceRefresh */ true)
 			const numberOfDays = range.endDate.diff(range.startDate, 'days') + 1;
 			const body = {
-				destination: value,
+				destination: destinationInput,
 				days: numberOfDays
 			}
 			console.log(body)
@@ -62,7 +64,7 @@ const CreateForm = () => {
 				'Content-Type': 'application/json',
 				'Authorization': token
 			};
-			const res = await axios.post(process.env.EXPO_PUBLIC_ITINERARY_API, body, {
+			const res = await axios.post(`${process.env.EXPO_PUBLIC_API_BASE_URL}/itinerary`, body, {
 				headers: headers
 			})
 			console.log(res.data);
@@ -80,8 +82,14 @@ const CreateForm = () => {
 			console.log(err.message)
 		}
 		finally {
+			setDestination(null)
 			setLoading(false);
 		}
+	}
+
+	const onAutocompleteSelect = (value) => {
+		setDestination(value);
+		setDestinationInput(value);
 	}
 
   return (
@@ -93,12 +101,15 @@ const CreateForm = () => {
 				<Text category='h3'>Plan your vacation</Text>
 				<Text style={styles.formElement} category='p1'>Just type in your dream destination, planned dates and let AI do the planning for you.</Text>
 			{/* Destination Input */}
+			<Layout style={styles.formElement}>
 				<Input
-					placeholder='Your Destination 🌴'
-					value={value}
-					onChangeText={nextValue => setValue(nextValue)}
-					style={styles.formElement}
-				/>
+						placeholder='Your Destination 🌴'
+						value={destinationInput}
+						onChangeText={nextValue => setDestinationInput(nextValue)}
+					/>
+					<AutocompleteList textQuery={destinationInput} onItemSelect={onAutocompleteSelect}/>
+			</Layout>
+				
 
 				{/* Calender element */}
 				<Layout

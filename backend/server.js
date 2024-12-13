@@ -4,6 +4,8 @@ const ItineraryModel = require('./service/itineraryService')
 const { initializeApp } = require('firebase-admin/app');
 const admin = require('firebase-admin');
 const { getAuth } = require("firebase-admin/auth");
+const autocompleteService = require('./service/autocompleteService');
+const getImageService = require('./service/imageService');
 
 const app = express()
 const firebaseApp = initializeApp({
@@ -26,7 +28,7 @@ app.post('/itinerary', async (req, res) => {
 		const uid = decodedToken.uid;
 		console.log("User token verified for UID: " + uid);
 	}
-	catch(err) {
+	catch (err) {
 		console.log(err);
 		res.status(401).send("Unauthorized to access Itinerary API");
 		return;
@@ -39,12 +41,28 @@ app.post('/itinerary', async (req, res) => {
 		console.log(result);
 		res.status(200).send(result)
 	}
-	catch(err) {
+	catch (err) {
 		console.log(err);
 		res.status(500).send("Unable to connect to Gemini Service, please try again later.");
 	}
-	
+
 })
+
+app.get('/autocomplete', async (req, res) => {
+	var cityName = req.query.searchQuery;
+	var result = await autocompleteService(cityName);
+	console.log(result);
+	res.status(200).send(result);
+})
+
+app.get('/image', async (req, res) => {
+	var cityName = req.query.searchQuery;
+	var page = req.query.pageQuery
+	var result = await getImageService(cityName, page);
+	console.log(result);
+	res.status(200).send(result);
+})
+
 app.listen(port, () => {
 	console.log(`Example app listening on port ${port}`)
 })

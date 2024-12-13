@@ -71,6 +71,7 @@ const CreateForm = () => {
 			const tripObject = {
 				id: uuidv4(),
 				name: body.destination + " Trip",
+				destination: body.destination,
 				startDate: range.startDate.toISOString(),
 				endDate: range.endDate.toISOString(),
 				itinerary: res.data

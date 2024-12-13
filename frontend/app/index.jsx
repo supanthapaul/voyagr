@@ -1,21 +1,22 @@
 import { SafeAreaView, View, StyleSheet } from "react-native";
-import {Link} from 'expo-router';
-import { Icon, IconElement, Text, Layout, TopNavigation, TopNavigationAction } from '@ui-kitten/components';
-import CreateForm from "@/components/CreateForm";
+import { StatusBar } from 'expo-status-bar';
+import * as eva from '@eva-design/eva';
 import { getAuth, onAuthStateChanged } from "firebase/auth";
-import { useEffect, useState } from "react";
-import LoginPage from "../components/loginPage";
-import app, {auth} from '@/firebaseConfig';
-import {AppNavigator} from '@/components/AppTabNavigator';
-import { NavigationIndependentTree } from "@react-navigation/native";
+import app from '@/firebaseConfig'
 
+import { ApplicationProvider, Layout, Text, TopNavigation, IconRegistry } from '@ui-kitten/components';
+import { useState, useEffect } from "react";
+import { EvaIconsPack } from '@ui-kitten/eva-icons';
+import {TripsProvider} from '@/state/ItineraryContext';
+import {AppNavigator} from '@/components/AppStackNavigator';
+import LoginPage from "@/components/loginPage";
 
 export default function Index() {
+	const [theme, setTheme] = useState(eva.dark);
 	const [user, setUser] = useState(null);
 	const styles = StyleSheet.create({
 		container: {
 			flex: 1,
-			padding: 8
 		},
   });
 
@@ -24,28 +25,31 @@ export default function Index() {
 	const auth = getAuth();
 	onAuthStateChanged(auth, (user) => {
 		if (user) {
-			// User is signed in, see docs for a list of available properties
-			// https://firebase.google.com/docs/reference/js/auth.user
+			// User is signed in
 			const uid = user.uid;
 			setUser(user);
-			// ...
 		} else {
 			// User is signed out
-			// ...
 			setUser(null);
 		}
 	});
   }, []);
-
+  const statusBarOptions = {
+    backgroundColor: theme === eva.dark ? '#060028' : '#e0e0e0',
+		foregroundStyle: theme === eva.dark ? "light" : "dark"
+  };
   return (
-		<SafeAreaView style={{ flex: 1 }}>
-			<NavigationIndependentTree>
-			<Layout style={styles.container}>
-				{user != null ? (<AppNavigator />) : (<LoginPage />)}
-				
-			</Layout>
-			</NavigationIndependentTree>
-			
-		</SafeAreaView>
+		<TripsProvider>
+			<IconRegistry icons={EvaIconsPack} />
+			<ApplicationProvider {...eva} theme={theme}>
+				<SafeAreaView style={{ flex: 1 }}>
+				<Layout style={styles.container}>
+					{user != null ? (<AppNavigator />) : (<LoginPage />)}
+				</Layout>
+				</SafeAreaView>
+				<StatusBar backgroundColor={statusBarOptions.backgroundColor} style={statusBarOptions.foregroundStyle}/>
+			</ApplicationProvider>
+		</TripsProvider>
+    
   );
 }

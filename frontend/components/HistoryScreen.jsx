@@ -1,9 +1,8 @@
 import React, { useEffect } from 'react';
 import { StyleSheet, View } from 'react-native';
-import { Input, RangeDatepicker, Button, Layout, Text, Icon, List, ListItem } from '@ui-kitten/components';
+import { Input, RangeDatepicker, Button, Layout, Text, Icon, TopNavigation, Divider, List, ListItem } from '@ui-kitten/components';
 import { MomentDateService } from '@ui-kitten/moment';
 import moment from 'moment';
-import { Link, router  } from 'expo-router';
 import {useTripsContext} from '@/state/ItineraryContext';
 
 const dateService = new MomentDateService();
@@ -23,7 +22,7 @@ const styles = StyleSheet.create({
 	}
 });
 
-const HistoryScreen = () => {
+const HistoryScreen = ({ navigation, route }) => {
 	const { state, dispatch } = useTripsContext();
 
 	const renderItemAccessory = (id) => (
@@ -45,7 +44,7 @@ const HistoryScreen = () => {
 		<ListItem
 			title={`${item.name}`}
 			key={item.id}
-			onPress={e => router.navigate({pathname: '/[id]', params: {id: item.id}})}
+			onPress={e => navigation.navigate('Details', {id: item.id})}
 			description={`${moment(item.startDate).format("MMM Do, YYYY")} To ${moment(item.endDate).format("MMM Do, YYYY")}`}
 			accessoryRight={() => renderItemAccessory(item.id)}
 			/>
@@ -54,7 +53,9 @@ const HistoryScreen = () => {
 
   return (
     <Layout style={styles.formContainer}>
-			<Text category='h3'>History</Text>
+			<TopNavigation title={props => <Text {...props} style={[props.style, { fontSize: 22, fontWeight: "bold" }]}>Planned Trips</Text>}/>
+			<Divider />
+			{/* <Text category='h3'>History</Text> */}
 			<List
 				style={styles.listContainer}
 				data={state.trips}

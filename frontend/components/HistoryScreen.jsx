@@ -53,7 +53,7 @@ const HistoryScreen = ({ navigation, route }) => {
 
   return (
     <Layout style={styles.formContainer}>
-			<TopNavigation title={props => <Text {...props} style={[props.style, { fontSize: 22, fontWeight: "bold" }]}>Past Trips</Text>}/>
+			<TopNavigation title={props => <Text {...props} style={[props.style, { fontSize: 22, fontWeight: "bold" }]}>Planned Trips</Text>}/>
 			<Divider />
 			{/* <Text category='h3'>History</Text> */}
 			<List

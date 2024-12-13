@@ -1,7 +1,7 @@
 import React from 'react';
 import { NavigationContainer, NavigationIndependentTree } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { BottomNavigation, BottomNavigationTab, Layout, Text } from '@ui-kitten/components';
+import { BottomNavigation, BottomNavigationTab, Icon, Layout, Text } from '@ui-kitten/components';
 
 import { createStackNavigator } from '@react-navigation/stack';
 import TripDetailsScreen from './TripDetailsScreen';
@@ -11,13 +11,27 @@ import HistoryScreen from './HistoryScreen';
 const { Navigator, Screen } = createStackNavigator();
 const Tab = createBottomTabNavigator();
 
+const HomeIcon = (props) => (
+  <Icon
+    {...props}
+    name='edit-outline'
+  />
+);
+
+const HistoryIcon = (props) => (
+  <Icon
+    {...props}
+    name='clock-outline'
+  />
+);
+
 
 const BottomTabBar = ({ navigation, state }) => (
   <BottomNavigation
     selectedIndex={state.index}
     onSelect={index => navigation.navigate(state.routeNames[index])}>
-    <BottomNavigationTab title='HOME'/>
-    <BottomNavigationTab title='HISTORY'/>
+    <BottomNavigationTab title='HOME' icon={HomeIcon}/>
+    <BottomNavigationTab title='HISTORY' icon={HistoryIcon}/>
   </BottomNavigation>
 );
 

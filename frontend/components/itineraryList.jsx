@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { StyleSheet, View } from 'react-native';
-import { Card, List, Text, ListItem } from '@ui-kitten/components';
+import { Card, List, Text, ListItem, Icon } from '@ui-kitten/components';
 import {useTripsContext} from '@/state/ItineraryContext';
 import moment from 'moment';
 
@@ -8,10 +8,17 @@ import moment from 'moment';
 const itineraryList = ({trip}) => {
     useEffect(() => {
         console.log(trip)
-    }, [trip])
+    }, [trip]);
+
+		const renderItemIcon = (props) => (
+			<Icon
+				{...props}
+				name='checkmark-circle-outline'
+			/>
+		);
     
     const tripLists = ({ item, index }) => (
-        <ListItem title={`${item}`} />
+        <ListItem title={`${item}`} accessoryLeft={renderItemIcon}/>
       );
 
       const rendertripLists = (activities) => (
@@ -60,7 +67,7 @@ const styles = StyleSheet.create({
     maxHeight: "100%",
   },
   contentContainer: {
-    paddingHorizontal: 8,
+    paddingHorizontal: 4,
     paddingVertical: 4,
   },
   item: {

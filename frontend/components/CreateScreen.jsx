@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { Keyboard, StyleSheet, View } from 'react-native';
 import { Input, RangeDatepicker, Button, Layout, Text, Icon, Spinner, TopNavigation, Divider, Autocomplete, AutocompleteItem } from '@ui-kitten/components';
 import { MomentDateService } from '@ui-kitten/moment';
 import moment from 'moment';
@@ -90,6 +90,7 @@ const CreateForm = () => {
 	const onAutocompleteSelect = (value) => {
 		setDestination(value);
 		setDestinationInput(value);
+		Keyboard.dismiss();
 	}
 
   return (

@@ -72,6 +72,7 @@ const AutocompleteList = ({textQuery, onItemSelect}) => {
 					data={autocompleteList}
 					ItemSeparatorComponent={Divider}
 					renderItem={renderItem}
+					keyboardShouldPersistTaps={true}
 				/>
 			</>)}
 		</>

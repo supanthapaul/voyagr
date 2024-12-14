@@ -22,6 +22,7 @@ const TripsContext = createContext();
 // 	]
 // }
 const initialState = {
+	theme: "dark",
   trips: null,
 };
 
@@ -34,6 +35,7 @@ const tripsReducer = (state, action) => {
       };
     case 'SET_TRIPS':
       return {
+				...state,
         ...action.payload,
       };
     case 'REMOVE_TRIP':
@@ -41,6 +43,11 @@ const tripsReducer = (state, action) => {
         ...state,
         trips: state.trips.filter(trip => trip.id !== action.payload),
       };
+		case 'SET_THEME':
+			return {
+				...state,
+				theme: action.payload == "dark" ? "dark" : "light"
+			};
     default:
       return state;
   }
@@ -57,7 +64,6 @@ export const TripsProvider = ({ children }) => {
 
   useEffect(() => {
     AsyncStorage.getItem('VOYAGR::TRIPS_STATE').then((value) => {
-      console.log("valueee" + value)
       if (value) {
         dispatch({ type: 'SET_TRIPS', payload: JSON.parse(value) })
       }

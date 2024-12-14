@@ -7,6 +7,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import TripDetailsScreen from './TripDetailsScreen';
 import CreateScreen from './CreateScreen';
 import HistoryScreen from './HistoryScreen';
+import OptionsScreen from './OptionsScreen';
 
 const { Navigator, Screen } = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -25,6 +26,13 @@ const HistoryIcon = (props) => (
   />
 );
 
+const OptionsIcon = (props) => (
+  <Icon
+    {...props}
+    name='settings-outline'
+  />
+);
+
 
 const BottomTabBar = ({ navigation, state }) => (
   <BottomNavigation
@@ -32,6 +40,7 @@ const BottomTabBar = ({ navigation, state }) => (
     onSelect={index => navigation.navigate(state.routeNames[index])}>
     <BottomNavigationTab title='HOME' icon={HomeIcon}/>
     <BottomNavigationTab title='HISTORY' icon={HistoryIcon}/>
+    <BottomNavigationTab title='OPTIONS' icon={OptionsIcon}/>
   </BottomNavigation>
 );
 
@@ -39,6 +48,7 @@ const TabNavigator = () => (
   <Tab.Navigator tabBar={props => <BottomTabBar {...props} />}>
     <Tab.Screen name='Create' component={CreateScreen} options={{headerShown: false}}/>
     <Tab.Screen name='History' component={HistoryScreen} options={{headerShown: false}}/>
+    <Tab.Screen name='Options' component={OptionsScreen} options={{headerShown: false}}/>
   </Tab.Navigator>
 );
 

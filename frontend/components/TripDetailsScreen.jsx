@@ -18,7 +18,7 @@ export default function TripDetails({ navigation, route }) {
 	const id = route.params.id;
 	const { state, dispatch } = useTripsContext();
 	const [currentTrip, setCurrentTrip] = useState(null);
-	const [image, setImage] = useState();
+	const [image, setImage] = useState([]);
 
 	const navigateBack = () => {
     navigation.goBack();
@@ -41,7 +41,7 @@ export default function TripDetails({ navigation, route }) {
           },
         });
         setImage(response.data[0].src.medium);
-		console.log(response.data[0].src.original);
+				console.log();
 		
       } catch (err) {
         setError(err.message);
@@ -70,15 +70,13 @@ export default function TripDetails({ navigation, route }) {
 				accessoryLeft={BackAction}/>
       <Divider/>
 			<Layout style={{flex: 1}}>
-			{image && (
           <Image
-					source={image}
-						placeholder={{ blurhash }}
+						placeholder={{ blurhash}}
+						source={image}
             style={{ width: "100%", height: 200, marginBottom: 10 }} 
 						contentFit="cover"
-        transition={1000}
+        		transition={200}
           />
-			)}
 				{currentTrip && <ItineraryList trip={currentTrip} />}
 			</Layout>
 		</SafeAreaView>

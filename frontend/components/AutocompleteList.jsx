@@ -9,7 +9,7 @@ const data = new Array(8).fill({
   description: 'Description for Item',
 });
 
-const AutocompleteList = ({textQuery, onItemSelect}) => {
+const AutocompleteList = ({textQuery, searchType, onItemSelect}) => {
 	const [autocompleteList, setAutocompleteList] = useState([]);
 	const [loading, setLoading] = useState(false);
 	const [currentlySelected, setCurrentlySelected] = useState("");
@@ -20,14 +20,14 @@ const AutocompleteList = ({textQuery, onItemSelect}) => {
 			return;
 		setLoading(true);
 		try {
-			const token = await getAuth().currentUser.getIdToken(/* forceRefresh */ true);
+			//const token = await getAuth().currentUser.getIdToken(/* forceRefresh */ true);
 			const headers = {
-				'Content-Type': 'application/json',
-				'Authorization': token
+				'Content-Type': 'application/json'
 			};
 			const response = await axios.get(`${process.env.EXPO_PUBLIC_API_BASE_URL}/autocomplete`, {
 				params: {
-					searchQuery
+					searchText: searchQuery,
+					searchType: searchType
 				},
 				headers
 			})

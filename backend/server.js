@@ -49,22 +49,23 @@ app.post('/itinerary', async (req, res) => {
 })
 
 app.get('/autocomplete', async (req, res) => {
-	const header = req.headers['authorization'];
+	// const header = req.headers['authorization'];
+
+	// try {
+	// 	const decodedToken = await getAuth().verifyIdToken(header);
+	// 	const uid = decodedToken.uid;
+	// 	console.log("User token verified for UID: " + uid);
+	// }
+	// catch (err) {
+	// 	console.log(err);
+	// 	res.status(401).send("Unauthorized to access Autocomplete API");
+	// 	return;
+	// }
 
 	try {
-		const decodedToken = await getAuth().verifyIdToken(header);
-		const uid = decodedToken.uid;
-		console.log("User token verified for UID: " + uid);
-	}
-	catch (err) {
-		console.log(err);
-		res.status(401).send("Unauthorized to access Autocomplete API");
-		return;
-	}
-
-	try {
-		const cityName = req.query.searchQuery;
-		const result = await autocompleteService(cityName);
+		const destinationText = req.query.searchText;
+		const destinationType = req.query.searchType;
+		const result = await autocompleteService(destinationText, destinationType);
 		console.log(result);
 		res.status(200).send(result);
 	}

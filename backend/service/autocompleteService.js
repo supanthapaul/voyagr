@@ -1,9 +1,14 @@
 var axios = require('axios');
 
-module.exports = async function getAutocompleteService(searchQuery) {
+module.exports = async function getAutocompleteService(searchText, searchType) {
+
+	const validTypes = ["city", "state", "country"];
+	searchType = validTypes.includes(searchType) ? searchType : "country";
+
+	console.log("Search Type: ", searchType);
 	var config = {
 		method: 'get',
-		url: `https://api.geoapify.com/v1/geocode/autocomplete?text=${searchQuery}&apiKey=${process.env.GEOAPIFY_AUTOCOMPLETE_API_KEY}`,
+		url: `https://api.geoapify.com/v1/geocode/autocomplete?text=${searchText}&type=${searchType}&apiKey=${process.env.GEOAPIFY_AUTOCOMPLETE_API_KEY}`,
 		headers: {}
 	};
 	try {

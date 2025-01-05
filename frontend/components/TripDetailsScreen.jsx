@@ -7,6 +7,7 @@ import { useEffect, useState } from "react";
 import { getAuth } from "firebase/auth";
 import { useTripsContext } from "@/state/ItineraryContext";
 import ItineraryList from "@/components/itineraryList";
+import { LinearGradient } from 'expo-linear-gradient';
 import axios from 'axios';
 const blurhash =
   '|rF?hV%2WCj[ayj[a|j[az_NaeWBj@ayfRayfQfQM{M|azj[azf6fQfQfQIpWXofj[ayj[j[fQayWCoeoeaya}j[ayfQa{oLj?j[WVj[ayayj[fQoff7azayj[ayj[j[ayofayayayj[fQj[ayayj[ayfjj[j[ayjuayj[';
@@ -70,13 +71,41 @@ export default function TripDetails({ navigation, route }) {
 				accessoryLeft={BackAction}/>
       <Divider/>
 			<Layout style={{flex: 1}}>
+        <Layout style ={{
+          position: "relative",
+          textAlign: "center",
+        }}>
           <Image
 						placeholder={{ blurhash}}
 						source={image}
-            style={{ width: "100%", height: 200, marginBottom: 10 }} 
+            style={{ width: "100%", height: 200, marginBottom: 10,  }} 
 						contentFit="cover"
         		transition={200}
+
           />
+          <LinearGradient
+            colors={[
+              'transparent',
+              '#000',
+            ]}
+            style={{
+              width: '100%',
+              height: 85,
+              position: "absolute",
+                bottom: 0,
+            }}
+          />
+          {
+            currentTrip && (
+              <Text category='h3' style={{
+                position: "absolute",
+                left: 4,
+                bottom: 12,
+                zIndex: 1,
+                }}> {currentTrip.name}</Text>
+            )
+          }
+          </Layout>
 				{currentTrip && <ItineraryList trip={currentTrip} />}
 			</Layout>
 		</SafeAreaView>

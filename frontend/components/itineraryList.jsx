@@ -50,7 +50,7 @@ const itineraryList = ({trip}) => {
 
   return (
     <> 
-    <Text category='h5'> {trip.name}</Text>
+    
     <List
       style={styles.container}
       contentContainerStyle={styles.contentContainer}
